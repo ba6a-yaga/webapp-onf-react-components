@@ -6,21 +6,23 @@ class ContentLoader extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoading:props.isLoading
+            isLoading:props.isLoading,
+            noMoreData:props.noMoreData
         }
         this.onPositionChange = this.onPositionChange.bind(this)
     }
     
     componentWillReceiveProps(props) {
-        console.log("nextProps", props)
         this.setState({
-            isLoading:props.isLoading
-        })
+            isLoading:props.isLoading,
+            noMoreData:props.noMoreData
+        }, this.onPositionChange)
     }
 
     componentDidMount() {
         window.addEventListener("scroll", this.onPositionChange)
         window.addEventListener("resize", this.onPositionChange)
+        this.onPositionChange()
     }
     
     componentWillUnmount() {
@@ -37,7 +39,7 @@ class ContentLoader extends Component {
     }
 
     onPositionChange(e) {
-        if (!this.state.isLoading) {
+        if (!this.state.isLoading && !!this.state.noMoreData) {
             if (this.isLoaderPresentOnScreen()) {
                 if (this.props.onLoadMore) {
                     this.props.onLoadMore(e)

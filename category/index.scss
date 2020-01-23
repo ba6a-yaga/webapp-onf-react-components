@@ -1,0 +1,39 @@
+
+.add, .delete, .edit {
+    justify-self: flex-end;
+    margin-left:20px;
+}
+.arrow {
+    margin-left:20px;
+}
+
+.category {
+    .yes, .no {
+        display: inline-block;
+        position: relative;
+        width: 17px;
+        height: 17px;
+        cursor: pointer;
+        transition-duration: 300ms;
+        transition-timing-function: ease-out;
+        margin-left:25px;
+        &:hover {
+            transform: scale(1.2);
+            transition-duration: 300ms;
+            transition-timing-function: ease-out;
+        }
+    }
+    .yes {
+        top: 5px;
+        width: 17px;
+        height: 20px;
+        right: 0;
+    }
+    .no {
+        margin-right:5px;
+        top: 5px;
+        height: 20px;
+        width: 12px;
+        right: 0;
+    } 
+}

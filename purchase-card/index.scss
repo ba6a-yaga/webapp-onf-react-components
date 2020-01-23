@@ -1,0 +1,53 @@
+.purchase-card{ 
+    transition-duration: 300ms;
+    transition-timing-function: ease-out;
+    
+    &.flag {
+        &:before {
+            transition-duration: 300ms;
+            transition-timing-function: ease-out;
+            background-image: none;
+        }
+    }
+    .card__tag__monitor {
+        &:after {
+            transition-duration: 300ms;
+            transition-timing-function: ease-out;
+        }
+    }
+    .card__tag__edit {
+        &:after {
+            transition-duration: 300ms;
+            transition-timing-function: ease-out;
+        }
+    }
+
+    &:hover {
+        background-color: #e3edf0;
+        &.flag {
+            &:before {
+                background-color: #a7cbda;
+            }
+        }
+        .card__tag {
+            background-color: #ebf5f8;
+        }
+        .card__tag__monitor {
+            &:after {
+                background-color: #a7cbda;
+            }
+        }
+        .card__tag__edit {
+            &:after {
+                background-color: #a7cbda;
+            }
+        }
+    }
+    &__edit-button {
+        cursor:pointer
+    }
+    &__preloader {
+        display:grid;
+        grid-gap:3px;
+    }
+}

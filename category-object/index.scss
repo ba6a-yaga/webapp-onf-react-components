@@ -1,0 +1,36 @@
+.category-object {
+    input {
+        width:auto;
+    }
+    position: relative;
+    outline: none;
+    display: flex;
+    justify-content: space-between;
+    
+    justify-self: flex-end;
+    padding-right:5px;
+    padding-left:42px;
+    width:auto;
+    .add, .delete, .edit {
+        display:inline-block;
+        justify-self: flex-end;
+        margin-left:0;
+        margin-right: 20px;
+        width:20px;
+        height:20px;
+        position: relative;
+        right:0;
+        top:0;
+        background-size:contain;
+    }
+    .edit {
+        margin-right: 17px;
+    }
+    .delete {
+        margin-right: 15px;
+    }
+    .no {
+        margin-right:20px;
+        margin-left:20px;
+    } 
+}

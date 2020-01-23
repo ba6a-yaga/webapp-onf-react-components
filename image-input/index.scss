@@ -1,0 +1,22 @@
+.image-input {
+    &_loaded {
+        padding-bottom: 100%;
+    }
+    &__content {
+        &:after {
+            padding-bottom: 100%;
+        }
+        img {
+            object-fit: cover;
+            height:100%;
+        }
+    }
+    &__photo-load{
+        flex-direction: column;
+    }
+}
+.photo {
+    &:after {
+        padding-bottom: 0;
+    }
+}

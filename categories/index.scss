@@ -1,0 +1,56 @@
+.add, .delete, .edit {
+    justify-self: flex-end;
+    margin-left:20px;
+}
+.arrow {
+    margin-left:20px;
+}
+.card__list {
+    overflow: hidden;
+    border-radius: 20px;
+    padding-top:1px;
+}
+.card__list__item {
+    &:last-child {
+        .card__list__item__header {
+            &.no-children {
+                border-radius: 0 0 20px 20px;
+            }
+        }
+        &:first-child {
+            .card__list__item__header {
+                &.no-children {
+                    border-radius: 20px 20px 20px 20px;
+                }
+            }
+        }
+    }
+}
+
+.expand-enter {
+    opacity: 0.01;
+    height:0px;
+    overflow: hidden;
+}
+
+.expand-enter.expand-enter-active {
+    opacity: 1;
+    height:72px;
+    transition: opacity 300ms ease-in, height 300ms ease-in;
+}
+
+.expand-leave {
+    box-sizing: border-box;
+    overflow: hidden;
+    height:72px;
+    opacity: 1;
+}
+
+.expand-leave.expand-leave-active {
+    opacity: 0.01;
+    height:0px;
+    transition: opacity 300ms ease-in, height 300ms ease-in;
+}
+
+
+

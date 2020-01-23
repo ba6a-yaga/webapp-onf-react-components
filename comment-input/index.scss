@@ -1,0 +1,103 @@
+
+.card__list__item__comment__add {
+    align-items: flex-start;
+    &.simple {
+        .card {
+            padding:0;
+            border:0;
+        }
+    }
+    &.extended {
+        .card {
+            &.card__list__item__comment__text_container {
+                padding:0 0 8px 0;
+            }
+            .input_form {
+                textarea {
+                    border-color: transparent;
+                    outline: none;
+                    border-radius: 0;
+                    background: transparent;
+                }
+            }
+        }
+        .card__list__item__comment__text  {
+            .card__list__item__comment__attach {
+                margin-top:0;
+                margin-left:8px;
+                margin-right:8px;
+                .image, .video {
+                    margin-right:15px;
+                    margin-left:0;
+                    &:before {
+                        pointer-events: none;
+                    }
+                }
+            }
+            .card__list__item__comment__selectors {
+                margin-left:8px;
+                margin-right:8px;
+                margin-top:10px;
+                display:grid;
+                grid-gap:10px;
+                grid-template-columns:repeat(2, minmax(0, 1fr));
+                @media (max-width: 576px) {
+                    grid-template-columns:repeat(1, minmax(0, 1fr));
+                }
+            }
+            .card__list__item__comment__edit_form {
+                padding:0 8px;
+                margin-left:0;
+                margin-right:0;
+            }
+            .textarea_form{
+                margin-top:0
+            }
+            .attach_button {
+                top:20px;
+            }
+            .image_add {
+                margin-left:0;
+            }
+        }
+    }
+    .input_form  {
+        textarea {
+            min-height: 16px;
+            padding-top:25px;
+            padding-bottom:20px;
+            font-size: 10pt;
+            padding-right:93px;
+        }
+        
+        &.youtube  {
+            margin:15px 8px 0 8px;
+            input {
+                padding: 10px 15px;
+                font-size: 10pt;
+                border-radius: 10px;
+            }
+        }
+    }
+
+    .checkbox_container {
+        margin:10px 10px 0 10px;
+    }
+    .btn-small {
+        align-self: flex-start;
+        margin-top:10px;    
+    }
+    textarea {
+        outline: none;
+    }
+    .form-input__label {
+        pointer-events:none;
+        cursor: auto;
+    }
+}
+.notransition {
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -o-transition: none !important;
+    transition: none !important;
+  }

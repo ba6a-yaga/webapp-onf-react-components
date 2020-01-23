@@ -1,0 +1,74 @@
+.card__list__item__comments {
+    .card__list__item__comment__text_container {
+        padding:20px 7px 7px 7px;
+        .card__list__item__comment__text {
+            margin:0;
+            padding:0;
+            border:0;
+            .input_form:first-child {
+                margin-top:0;
+            }
+        }
+    }
+    .card__list__item__comment {
+        .card__list__item__comment__add {
+            padding:0;
+            margin:0;
+            
+            .checkbox_container {
+                padding-bottom:0;
+            }
+        }
+        .card__list__item__comment__body {
+            .card__list__item__comment__text__control {
+                min-width: 30px;
+                width:30px;
+                margin-right:16px;
+                .card__list__item__comment__text__delete {
+                    margin:5px 0;
+                }
+            }
+        }
+        &.editing {
+            .card__list__item__comment__body {
+                .card__list__item__comment__text__control {
+                    margin-top:-45px;
+                }
+            }
+            form {
+                width:100%;
+            }
+            .card__list__item__comment__text  {
+            }
+            
+            .card__list__item__comment__add {
+                .input_form  {
+                    textarea {
+                        padding-top:20px;
+                        padding-bottom:20px;
+                        font-size: 10pt;
+                        padding-right:13px;
+                    }
+                    
+                    &.youtube  {
+                        margin:15px 0 0 0;
+                        input {
+                            padding: 10px 14px;
+                            font-size: 10pt;
+                            border-radius: 10px;
+                        }
+                    }
+                }
+            }
+                        
+            .btn-check {
+                &:after {
+                    top: 10px;
+                }   
+            }      
+        }
+    }
+    .card__list__item__comment__text__confirm {
+        margin-left:63px;
+    }
+}

@@ -3,6 +3,26 @@
         position: fixed;
         left:50%;
         transform: translateX(-50%);
-        bottom:60px;
+        bottom:30px;
+    }
+
+    .fade-enter {
+        opacity: 0.01;
+        overflow: hidden;
+    }
+    
+    .fade-enter.expand-enter-active {
+        opacity: 1;
+        transition: opacity 300ms ease-in;
+    }
+    
+    .fade-leave {
+        box-sizing: border-box;
+        opacity: 1;
+    }
+    
+    .fade-leave.expand-leave-active {
+        opacity: 0.01;
+        transition: opacity 300ms ease-in;
     }
 }

@@ -7,9 +7,9 @@ export default class PurchasesList extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            
             list: props.data ? props.data : [],
             isLoading:false,
+            noMoreData:false,
         }
     }
 
@@ -20,47 +20,48 @@ export default class PurchasesList extends Component {
         setTimeout(()=> {
             for (let i = 0; i < 9; i++) {
                 this.state.list.push({
-                    id:"1283719823719872" + i,
+                    id:this.state.list.length +  "1283719823719872" + i,
                     subtitle:"Поставка",
                     text:"Поставка аппарата близкофокусной рентгенотерапии в рамках реализации мероприятия «Переоснащение 3 медици...",
                     price:"2 500 000,00",
                     subscribed:true,
                 })
             }
-            this.setState({isLoading:false})
+            // !!!! CAUTION no more data определить по какому то параметру приходящему от сервера
+            this.setState({isLoading:false, noMoreData:this.state.list.length > 40})
         }, 1000)
     }
-
-
+ 
     onAddPurchaseClick(e) {
 
     }
 
     render() {
-        const {list, isLoading} = this.state
+        const {list, isLoading, noMoreData} = this.state
         return (
             <div className="purchases-list container">
                 <div className="row">
                     
                     {list.map((item) => {
                         return (
-                        <div className="col-12 col-md-6 col-lg-4 mb-3">
+                        <div className="col-12 col-md-6 col-lg-4 mb-3"  key={item.id}>
                             <PurchaseCard 
-                                key={item.id}
+                               
                                 {...item}
                             />
                         </div>
                     )})}
-                    {isLoading && Array(this.preloadingItemsCount).fill(
-                        <div className="col-12 col-md-6 col-lg-4 mb-3">
+                    {isLoading && Array(this.preloadingItemsCount).fill().map((i, index) => {
+                        return <div className="col-12 col-md-6 col-lg-4 mb-3" key={index}>
                             <PurchaseCard 
                                 isLoading={true}
-                            />
+                                />
                         </div>
+                            }
                         )
                     }
                 </div>
-                <ContentLoader isLoading={isLoading} onLoadMore={this.onLoadMore.bind(this)} />
+                <ContentLoader isLoading={isLoading} noMoreData={noMoreData} onLoadMore={this.onLoadMore.bind(this)} />
 
                 <div className="row mt-5">
                     <div className="col-12 text-center">

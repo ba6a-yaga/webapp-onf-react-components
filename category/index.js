@@ -119,9 +119,6 @@ class Category extends Component {
     }
 
 
-
-
-
     /**
      * Устанавливает значение состояния isOpened и обновляет значение высоты контента
      * @param {boolean} opened - развернут ли блок с контентом

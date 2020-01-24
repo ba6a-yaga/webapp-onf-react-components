@@ -41,7 +41,7 @@ class Statuses extends Component {
             body: body,
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-Token': Rails.csrfToken()
+                // 'X-CSRF-Token': Rails.csrfToken()
             }
         })
         .then(response => {

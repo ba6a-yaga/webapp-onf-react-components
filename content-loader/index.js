@@ -23,6 +23,7 @@ class ContentLoader extends Component {
         window.addEventListener("scroll", this.onPositionChange)
         window.addEventListener("resize", this.onPositionChange)
         this.onPositionChange()
+        
     }
     
     componentWillUnmount() {
@@ -35,11 +36,13 @@ class ContentLoader extends Component {
         
         let rect = elem.getBoundingClientRect()
         const top = rect.top - window.screen.height 
+        console.log(top)
         return top < 0
     }
 
     onPositionChange(e) {
-        if (!this.state.isLoading && !!this.state.noMoreData) {
+        console.log(this.state.isLoading, this.state.noMoreData)
+        if (!this.state.isLoading && !this.state.noMoreData) {
             if (this.isLoaderPresentOnScreen()) {
                 if (this.props.onLoadMore) {
                     this.props.onLoadMore(e)

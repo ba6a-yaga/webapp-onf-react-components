@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import "./index.scss"
 import Avatar from '../avatar'
-export class MemberCard extends Component {
+export class ArticleCard extends Component {
 
     contentPreloader = [
         {width:"60%", height:"14px", backgroundColor:"#F8F8F8", marginBottom:8},
@@ -24,8 +24,7 @@ export class MemberCard extends Component {
         return (
             <div 
                 className={[
-                    'member-card',
-                    'user',
+                    'article-card',
                     'card',
                     'card__text',
                     'card__small',
@@ -51,4 +50,4 @@ export class MemberCard extends Component {
     }
 }
 
-export default MemberCard
+export default ArticleCard

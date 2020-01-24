@@ -23,7 +23,7 @@ class Categories extends Component {
             body: JSON.stringify({category: {name: "Новый Перечень"}}),
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-Token': Rails.csrfToken()
+                // 'X-CSRF-Token': Rails.csrfToken()
             }
         })
         .then(response => {
@@ -58,7 +58,7 @@ class Categories extends Component {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-Token': Rails.csrfToken()
+                // 'X-CSRF-Token': Rails.csrfToken()
             }
         })
         .then(response => {
@@ -89,7 +89,7 @@ class Categories extends Component {
             body: JSON.stringify({category: {name: "Новый Объект"}}),
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-Token': Rails.csrfToken()
+                // 'X-CSRF-Token': Rails.csrfToken()
             }
         })
         .then(response => {
@@ -127,7 +127,7 @@ class Categories extends Component {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-Token': Rails.csrfToken()
+                // 'X-CSRF-Token': Rails.csrfToken()
             }
         })
         .then(response => {

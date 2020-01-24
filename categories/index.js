@@ -86,7 +86,10 @@ class Categories extends Component {
     addObject(categoryIndex) { 
         fetch("http://localhost:3000/category_objects/create", {
             method: 'PUT',
-            body: JSON.stringify({category: {name: "Новый Объект"}}),
+            body: JSON.stringify({'object': {
+                'name': 'Новый Объект',
+                'category_procurement_id': this.state.categories[categoryIndex].id}
+            }),
             headers: {
                 'Content-Type': 'application/json',
                 // 'X-CSRF-Token': Rails.csrfToken()
@@ -150,9 +153,36 @@ class Categories extends Component {
      * @param {string} value - новое название
      */
     changeName(item, value) {
-        console.log(item, value)
-        item.name = value
-        this.setState({categories:this.state.categories})
+        let id, url, body
+        if (item.list !== undefined) {
+            id = item.id 
+            url = new URL(`http://localhost:3000/procurement_categories/${id}`)
+            body = JSON.stringify({'category':{'name':value}})
+        } else {
+            id = item.id 
+            url = new URL(`http://localhost:3000/category_objects/${id}`)
+            body = JSON.stringify({'object':{'name':value}})
+        }
+
+        fetch(url, {
+            method: 'PATCH',
+            body: body,
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': Rails.csrfToken()
+            }
+        })
+        .then(response => {
+            if (response.status === 200) {
+                return response.json()
+            }
+        })
+        .then(data => {
+            if (data !== null) {
+                item.name = value
+                this.setState({categories:this.state.categories})
+            }
+        })
     }
 
     render() {

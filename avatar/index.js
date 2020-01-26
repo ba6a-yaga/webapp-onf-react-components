@@ -9,7 +9,7 @@ class Avatar extends Component {
     render() {
         const {fullname, photo_url} = this.props
         return (
-            <span className="card__avatar">{photo_url ?<img src={photo_url}/> : fullname}</span>
+            <span className="card__avatar">{photo_url ?<img src={photo_url}/> : this.initialsFor(fullname)}</span>
         )
     }
 }

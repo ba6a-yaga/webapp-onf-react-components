@@ -19,7 +19,6 @@ class Comments extends Component {
         this.setState({showAll:true})
     }
     onDelete(item, index) {
-        
         this.state.list.splice(index, 1)
         this.setState({list:this.state.list})
     }

@@ -8,6 +8,7 @@ export class Comment extends Component {
     deleteButtonRef = React.createRef()
     constructor(props) {
         super(props)
+
         this.state = {
             isEditing:false,
             isDeleting:false,
@@ -34,18 +35,24 @@ export class Comment extends Component {
             return this.statusColors[status]
         }
     }
-    
-    getAttachment(url, i) {
-        const videoId = utils.youtubeParser(url)
+
+    getPhoto(url, i) {
         return (
-            videoId ? 
-            <div key={i} className="video">
-                <a href={url} target="_blank"><img src={`http://img.youtube.com/vi/${videoId}/1.jpg`} alt="" /></a>
-            </div> :
             <div key={i} className="image">
                  <a href={url} target="_blank"><img src={url} alt="" /></a>
             </div>
         )
+    }
+
+    getVideo(url, i) {
+        const videoId = utils.youtubeParser(url)
+        if (videoId) {
+            return (
+                <div key={i} className="video">
+                    <a href={url} target="_blank"><img src={`http://img.youtube.com/vi/${videoId}/1.jpg`} alt="" /></a>
+                </div> 
+            )
+        } 
     }
 
     editClickHandler(e) {
@@ -71,6 +78,8 @@ export class Comment extends Component {
     onDeleteCancel() {
         this.setState({isDeleting:false, isEditing:false})
     }
+
+
     render() {
         const {isEditing, isDeleting} = this.state
         const {item, extended, currentUser, quality, terms} = this.props
@@ -88,16 +97,16 @@ export class Comment extends Component {
                     <div className="card__list__item__comment__tag__container">
                         {!extended
                             ? <span className={`card__list__item__comment__tag ${this.getOffenceColor(item.isOffence)}`}>
-                                    {this.getOffenceTitle(item.isOffence)}
+                                    {this.getOffenceTitle(item.is_propblem)}
                                 </span> 
                             : null
                         }
-                        {extended && item.quality !== undefined 
-                            ? <span className={`card__list__item__comment__tag ${this.getStatusColors(item.quality.status)}`}>{item.quality.title}</span> 
+                        {extended && item.tag_quality !== undefined 
+                            ? <span className={`card__list__item__comment__tag ${this.getStatusColors(item.tag_quality)}`}>{quality[item.tag_quality].name}</span> 
                             : null
                         }
-                        {extended && item.terms !== undefined 
-                            ? <span className={`card__list__item__comment__tag ${this.getStatusColors(item.terms.status)}`}>{item.terms.title}</span> 
+                        {extended && item.tag_terms !== undefined 
+                            ? <span className={`card__list__item__comment__tag ${this.getStatusColors(item.tag_terms)}`}>{terms[item.tag_terms].name}</span> 
                             : null
                         }
                     </div>
@@ -109,14 +118,35 @@ export class Comment extends Component {
                     </div>
                     {
                         isEditing
-                            ? <CommentInput action={`/comments/${item.id}`} quality={quality} terms={terms} extended={extended} currentUser={currentUser} isEditing={true} item={item}/> 
+                            ? <CommentInput 
+                                action={`/comments/${item.id}`}
+                                quality={quality} 
+                                terms={terms} 
+                                extended={extended} 
+                                currentUser={currentUser} 
+                                isEditing={true} 
+                                item={item}
+                                photo_url={item.photo_url}
+                                video_url={item.video_url}
+                            /> 
                             : <div className="card__list__item__comment__text">
-                                {item.message}
-                                {item.attachments.length > 0 && <div className="card__list__item__comment__attach">
-                                    {item.attachments.map((attachment, i) => {
-                                        return this.getAttachment(attachment, i)
-                                    })}
-                                </div>
+                                {item.text}
+                                {
+                                    (item.photo_url && item.photo_url.length > 0 || item.video_url && item.video_url.length > 0) && 
+                                    <div className="card__list__item__comment__attach">
+                                        {item.photo_url && ((typeof item.photo_url === "string") ?
+                                            this.getPhoto(item.photo_url, "photo_" + 0) :
+                                            item.photo_url.map((attachment, i) => {
+                                                return this.getPhoto(attachment, "photo_" + (i + 1))
+                                            })
+                                        )}
+                                        {item.video_url && ((typeof item.video_url === "string") ?
+                                            this.getVideo(item.video_url, "video_" + 0) :
+                                            item.video_url.map((attachment, i) => {
+                                                return this.getVideo(attachment,  "video_" + (i + 1))
+                                            })
+                                        )}
+                                    </div>
                                 }
                             </div>
                     }

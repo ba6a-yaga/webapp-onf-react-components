@@ -51,11 +51,23 @@ export class CommentInput extends Component {
     }
 
     onSubmit = (e) => {
-        // console.log(this.props.token)
-        e.stopPropagation();
+        let {extended, currentUser, quality, terms} = this.props
         let data = new FormData(e.target)
         // TODO тут возможно нужна будет дополнительная какая-то логика по обновлению списка
-        return false
+        let wrapper_comments = document.querySelector("#wrapper__comments")
+        if (wrapper_comments !== undefined && wrapper_comments !== null) {
+            let comment = {
+                'user': currentUser,
+                'created_at': 'сейчас',
+                'is_propblem': data.get('is_propblem'),
+                'text': data.get('text'),
+                'attachments': data.get('attachments'),
+            }
+            let react_component = (
+                <Comment quality={quality} terms={terms} extended={extended} key={wrapper_comments.length} item={comment} onDelete={(e) => {this.onDelete(comment, wrapper_comments.length)}}></Comment>
+            )
+            wrapper_comments.append(react_component)
+        }
     } 
 
     componentWillReceiveProps() {
@@ -78,7 +90,7 @@ export class CommentInput extends Component {
      */
     onChange(e) {
         // применяем текст
-        this.setState({message:e.target.value})
+        this.setState({text:e.target.value})
         this.autoGrow(e.target)
     }
 
@@ -168,7 +180,7 @@ export class CommentInput extends Component {
         const {text, attachments, youtubeLink, isYoutubeInputShow} = this.state
         const {procurement_id, work_id, type_evaluation, type_comment, extended, currentUser, isEditing, quality, terms, action} = this.props
         return (
-            <form action={action} data-remote="true" method="post" >
+            <form action={action} data-remote="true" onSubmit={this.onSubmit.bind(this)} method="post" >
                 <input name="comment[file]" type="file"  accept="image/*" onChange={this.onImagesChange.bind(this)} ref={this.fileInputRef} hidden />
                 <input name="comment[procurement_id]" type="text" value={procurement_id} readOnly  hidden />
                 <input name="comment[type_comment]" type="text" value={type_comment} readOnly  hidden />

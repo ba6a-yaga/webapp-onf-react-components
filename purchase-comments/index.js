@@ -4,7 +4,8 @@ import Comments from '../comments'
 
 export class PurchaseComments extends Component {
     render() {
-        const {title, extended, className, currentUser, quality, terms, data} = this.props
+        const {title, extended, className, currentUser, quality, terms, data, token} = this.props
+        console.log("token => "+token)
         return (
             <div className={`${className ? className: '' } purchase-comments`}>
                 <h2>{title}</h2>
@@ -16,7 +17,7 @@ export class PurchaseComments extends Component {
                                     <span>{item.title}</span>
                                 </Expandable.Header>
                                 <Expandable.Content>
-                                    <Comments quality={quality} terms={terms} extended={extended} list={item.comments} currentUser={currentUser}></Comments>
+                                    <Comments procurement_id={item.procurement_id} work_id={item.work_id} type_evaluation={item.type_evaluation} token={token} quality={quality} terms={terms} extended={extended} list={item.comments} currentUser={currentUser}></Comments>
                                 </Expandable.Content>
                             </Expandable>
                         )}

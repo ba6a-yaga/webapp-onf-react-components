@@ -71,10 +71,10 @@ export class Comment extends Component {
             <div className={`card__list__item__comment ${isEditing ? 'editing':'' }`}>
                 <div className="card__list__item__comment__header">
                     <div className="card__list__item__comment__card">
-                        <Avatar className="card__avatar" name={item.user.name} url={item.user.avatar}/>
+                        <Avatar className="card__avatar" fullname={item.user.fullname} photo_url={item.user.photo_url}/>
                         <div className="card__list__item__comment__name">
-                            <h2>{item.user.name}</h2>
-                            <span className="card__subtitle">{item.date}</span>
+                            <h2>{item.user.fullname}</h2>
+                            <span className="card__subtitle">{item.created_at}</span>
                         </div>
                     </div>
                     <div className="card__list__item__comment__tag__container">

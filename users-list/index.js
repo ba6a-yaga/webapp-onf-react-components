@@ -21,9 +21,10 @@ export class UsersList extends Component {
                                         return <UserCard
                                             key={index}
                                             className="d-inline-flex flex-row card__text mb-2 align-items-center" 
-                                            name={item.name} 
-                                            avatar={item.avatar} 
-                                            subtitle={item.role}
+                                            fullname={item.fullname} 
+                                            photo_url={item.photo_url} 
+                                            type_member={item.type_member}
+                                            user_id={item.id}
                                         />
                                     })}
                                 </div>

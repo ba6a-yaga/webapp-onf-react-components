@@ -24,16 +24,18 @@
         }
     }
     .yes {
-        top: 5px;
+        top: 0;
         width: 17px;
         height: 20px;
         right: 0;
+        mask-position: center center;
     }
     .no {
         margin-right:5px;
-        top: 5px;
+        top: 0;
         height: 20px;
         width: 12px;
         right: 0;
+        mask-position: center center;
     } 
 }

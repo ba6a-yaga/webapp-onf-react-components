@@ -19,7 +19,6 @@ class Comments extends Component {
         this.setState({showAll:true})
     }
     onDelete(item, index) {
-        
         this.state.list.splice(index, 1)
         this.setState({list:this.state.list})
     }
@@ -43,7 +42,7 @@ class Comments extends Component {
                                 className="btn btn-third card__list__item__comment__button"
                                 onClick={this.showAllClickHandler.bind(this)}
                             >Показать все комментарии</button>}
-                    <CommentInput procurement_id={procurement_id} work_id={work_id} type_evaluation={type_evaluation} token={token} quality={quality} terms={terms} extended={extended} currentUser={currentUser} />
+                    <CommentInput action="/comments/create" procurement_id={procurement_id} work_id={work_id} type_evaluation={type_evaluation} token={token} quality={quality} terms={terms} extended={extended} currentUser={currentUser} />
                 </div>
         )
     }

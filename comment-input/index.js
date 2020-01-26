@@ -14,12 +14,39 @@ export class CommentInput extends Component {
 
     constructor(props) {
         super(props)
+
+        
+        let attachments = []
+        if (props.photo_url !== undefined) {
+            if (typeof props.photo_url === "string") {
+                if (props.photo_url) {
+                    attachments.push(props.photo_url)
+                }
+            } else {
+                props.photo_url.forEach(element => {
+                    attachments.push(element)
+                });
+            }
+        }
+        if (props.video_url !== undefined) {
+            if (typeof props.video_url === "string") {
+                if (props.video_url) {
+                    attachments.push(props.video_url)
+                }
+            } else {
+                props.video_url.forEach(element => {
+                    attachments.push(element)
+                });
+            }
+        }
+
+        console.log(attachments)
         this.state = {
-            message:(props.item && props.item.message) ? props.item.message : '' ,
+            text:(props.item && props.item.text) ? props.item.text : '' ,
             youtubeLink:"", 
             height:"0", 
             isYoutubeInputShow:props.isEditing,
-            attachments:(props.item && props.item.attachments) ? props.item.attachments : []
+            attachments:attachments
         }
     }
 
@@ -33,7 +60,7 @@ export class CommentInput extends Component {
 
     componentWillReceiveProps() {
         this.setState({
-            message:this.props.message ? this.props.message : '' ,
+            text:this.props.text ? this.props.text : '' ,
         }, this.autoGrow)
     }
     
@@ -116,6 +143,7 @@ export class CommentInput extends Component {
                 <img src={`http://img.youtube.com/vi/${videoId}/1.jpg`} alt="" />
             </div>
             : <div key={i} className="image"  onClick={(e)=>{this.onAttachmentDelete(url, i)}}>
+                <input name="photo_url[]" type="text" value={url}  hidden readOnly/>
                 <img src={url} alt="" />
             </div>
         )
@@ -137,10 +165,10 @@ export class CommentInput extends Component {
     }
 
     render() {
-        const {message, attachments, youtubeLink, isYoutubeInputShow} = this.state
-        const {procurement_id, work_id, type_evaluation, extended, currentUser, isEditing, quality, terms} = this.props
+        const {text, attachments, youtubeLink, isYoutubeInputShow} = this.state
+        const {procurement_id, work_id, type_evaluation, extended, currentUser, isEditing, quality, terms, action} = this.props
         return (
-            <form action="/comments/create" data-remote="true" method="post" >
+            <form action={action} data-remote="true" method="post" >
                 <input name="file" type="file"  accept="image/*" onChange={this.onImagesChange.bind(this)} ref={this.fileInputRef} hidden />
                 <input name="procurement_id" type="text" value={procurement_id}  hidden />
                 {work_id !== undefined 
@@ -154,7 +182,7 @@ export class CommentInput extends Component {
                     <div className="card card__list__item__comment__text_container">
                         <div className="card card__list__item__comment__text edit">
                             <span className="input_form textarea_form">
-                                {!isEditing && <label id="txt2" htmlFor="message" className={`label form-input__label ${message !== '' ? 'full' : ''}`}>Добавьте комментарий</label>}
+                                {!isEditing && <label id="txt2" htmlFor="message" className={`label form-input__label ${text !== '' ? 'full' : ''}`}>Добавьте комментарий</label>}
                                 <textarea 
                                     ref={this.textareaRef}
                                     className="card__list__item__comment__textarea" 
@@ -162,7 +190,7 @@ export class CommentInput extends Component {
                                     id="message"
                                     onChange={this.onChange.bind(this)}
                                     name="text"
-                                    value={message}
+                                    value={text}
                                     style={{height:this.state.height}}
                                 ></textarea>
                             </span>

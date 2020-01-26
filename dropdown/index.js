@@ -91,7 +91,7 @@ export class Dropdown extends Component {
         return (
             <div className={`input_selector mr-3 dropdown ${isExpanded ? 'dropdown_expanded' : 'dropdown_collapsed'}`}>
                 <div className="dropdown__current" ref={this.currentRef} onClick={(e)=>{this.expand(e)}}>
-                    {selectedItem ? selectedItem.title : 'Не выбрано'}
+                    {selectedItem ? selectedItem.name : 'Не выбрано'}
                 </div>
                 <ul className="dropdown__list" ref={this.listRef}>
                     {options && options.map((item, index) => {
@@ -101,7 +101,7 @@ export class Dropdown extends Component {
                                 key={index} 
                                 onClick={(e)=>{this.selectItem(item, index)}} 
                                 hidden={item.disabled}
-                            >{item.title}</li>
+                            >{item.name}</li>
                         )
                     })}
                 </ul>
@@ -113,7 +113,7 @@ export class Dropdown extends Component {
                                 className="dropdown__select" 
                                 value={item.value} 
                                 disabled={item.disabled} 
-                            >{item.title}</option>
+                            >{item.name}</option>
                         )
                     })}
                 </select>

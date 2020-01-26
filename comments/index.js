@@ -11,10 +11,7 @@ class Comments extends Component {
         super(props)
         this.state = {
             showAll:false,
-            list:props.list.map((obj, i) => {
-                obj.id = i; 
-                return obj
-            }) 
+            list:props.list
         }
     }
 
@@ -28,16 +25,17 @@ class Comments extends Component {
     }
     render() {
         const {showAll, list} = this.state
-        const {extended, className, currentUser, quality, terms} = this.props
+        const {procurement_id, work_id, type_evaluation, extended, className, currentUser, quality, terms, token} = this.props
         const comments = showAll ? list : list.slice(0, 2);
         return (
                 <div className={`${className ? className: '' } card__list__item__comments`}>
+                    <div id="wrapper__comments">
                     {comments && comments.map((item, index)=> {
                         return (
                             <Comment quality={quality} terms={terms} extended={extended} key={item.id} item={item} onDelete={(e) => {this.onDelete(item, index)}}></Comment>
                         )
                     })}
-                    
+                    </div>
                     {list.length > 2 
                         && !showAll 
                         && <button 
@@ -45,7 +43,7 @@ class Comments extends Component {
                                 className="btn btn-third card__list__item__comment__button"
                                 onClick={this.showAllClickHandler.bind(this)}
                             >Показать все комментарии</button>}
-                    <CommentInput quality={quality} terms={terms} extended={extended} currentUser={currentUser} />
+                    <CommentInput procurement_id={procurement_id} work_id={work_id} type_evaluation={type_evaluation} token={token} quality={quality} terms={terms} extended={extended} currentUser={currentUser} />
                 </div>
         )
     }

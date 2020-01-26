@@ -111,6 +111,17 @@ class Categories extends Component {
                     this.setState({categories:this.state.categories})
                 }
             }
+        }).catch(err => {
+            // получаю максимальное значение id объекта чтобы добавить уникальный id для нового объекта
+            var maxId = this.state.categories[categoryIndex].list.reduce((accumulator, current)=> {
+                return Math.max(accumulator, current.id)
+            }, 0)
+            
+            // добавляю новый объект
+            this.state.categories[categoryIndex].list.push({name:"Новый объект", id:maxId + 1})
+
+            // обновляю состояние с новым объектом в категории
+            this.setState({categories:this.state.categories})
         })
     }
 
@@ -165,7 +176,7 @@ class Categories extends Component {
             body: body,
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-Token': Rails.csrfToken()
+                // 'X-CSRF-Token': Rails.csrfToken()
             }
         })
         .then(response => {
@@ -178,6 +189,9 @@ class Categories extends Component {
                 item.name = value
                 this.setState({categories:this.state.categories})
             }
+        }).catch(err => {
+            item.name = value
+            this.setState({categories:this.state.categories})
         })
     }
 

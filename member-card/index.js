@@ -16,6 +16,7 @@ export class MemberCard extends Component {
 
     render() {
         const {
+            id, 
             name, 
             avatar,
             className,
@@ -32,12 +33,14 @@ export class MemberCard extends Component {
                     className ? className: '',
                 ].filter(item=>item).join(' ')}
             >   
-                {!isLoading && <Avatar className="card__avatar" name={name} url={avatar}/>}
-                {!isLoading && <h2 className="card__name m-0">{name}</h2>}
-                {!isLoading && <div className="edit"></div>}
-                {!isLoading && <div className="delete" onClick={this.onDelete.bind(this)}></div>}
-                {isLoading &&
-                    <div className="member-card__preloader">
+                {!isLoading
+                ? [
+                    <Avatar className="card__avatar" name={name} url={avatar}/>,
+                    <h2 className="card__name m-0">{name}</h2>,
+                    <a href={`article/edit/${id}`}  className="edit" ></a>,
+                    <div className="delete" onClick={this.onDelete.bind(this)}></div>,
+                ]
+                : <div className="member-card__preloader">
                         <div className="member-card__preloader-circle"></div>
                         <div>
                             {this.contentPreloader.map((item)=>{

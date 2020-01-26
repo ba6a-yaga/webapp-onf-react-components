@@ -1,28 +1,47 @@
-.members-list  {
+.articles-list  {
     .btn-main {
         position: fixed;
         left:50%;
         transform: translateX(-50%);
         bottom:30px;
     }
-
-    .fade-enter {
-        opacity: 0.01;
-        overflow: hidden;
+    .masonry {
+        column-count: 3;
+        display: inline-block;
+        width:100%;
     }
-    
-    .fade-enter.expand-enter-active {
-        opacity: 1;
-        transition: opacity 300ms ease-in;
+    .masonry__item {
+        display:inline-block;
     }
-    
-    .fade-leave {
-        box-sizing: border-box;
-        opacity: 1;
-    }
-    
-    .fade-leave.expand-leave-active {
-        opacity: 0.01;
-        transition: opacity 300ms ease-in;
+      
+      .masonry__item {
+        position: relative;
+        width: 100%;
+        color: #aca7a7;
+        -webkit-column-break-inside: avoid;
+        break-inside: avoid;
+        page-break-inside: avoid;
+        &:nth-of-type(4n+1) { order: 1; }
+        &:nth-of-type(4n+2) { order: 2; }
+        &:nth-of-type(4n+3) { order: 3; }
+        &:nth-of-type(4n)   { order: 4; }
+      }
+      .break {
+        
+        flex-basis: 100%;
+        width: 0;
+        border: 1px solid #ddd;
+        margin: 0;
+        content: "";
+        padding: 0;
+      }
+      
+      /* Force new columns */
+      &::before,
+      &::after {
+        content: "";
+        flex-basis: 100%;
+        width: 0;
+        order: 2;
     }
 }

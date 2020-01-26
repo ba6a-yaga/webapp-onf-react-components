@@ -32,6 +32,9 @@
             opacity: 1;
         }
     }
+    .btn-delete {
+        padding: 10px 37px;
+    }
     &__preloader {
         width:100%;
         grid-template-columns: 40px minmax(0, 1fr);

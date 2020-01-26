@@ -138,9 +138,9 @@ export class CommentInput extends Component {
 
     render() {
         const {message, attachments, youtubeLink, isYoutubeInputShow} = this.state
-        const {procurement_id, work_id, type_evaluation, extended, currentUser, isEditing, quality, terms} = this.props
+        const {procurement_id, work_id, type_evaluation, extended, currentUser, isEditing, quality, terms, action} = this.props
         return (
-            <form action="/comments/create" data-remote="true" method="post" >
+            <form action={action} data-remote="true" method="post" >
                 <input name="file" type="file"  accept="image/*" onChange={this.onImagesChange.bind(this)} ref={this.fileInputRef} hidden />
                 <input name="procurement_id" type="text" value={procurement_id}  hidden />
                 {work_id !== undefined 

@@ -5,7 +5,7 @@ import "./index.scss";
 import utils from '../comments/utils';
 
 export class Comment extends Component {
-
+    deleteButtonRef = React.createRef()
     constructor(props) {
         super(props)
         this.state = {
@@ -19,6 +19,7 @@ export class Comment extends Component {
         "orange",
         "green"
     ]
+    
 
     getOffenceTitle(isOffence) {
         return isOffence ? "Есть нарушения" : "Нет нарушений";
@@ -55,11 +56,18 @@ export class Comment extends Component {
     deleteClickHandler(e) {
         this.setState({isDeleting:true, isEditing:false})
     }
-    onDeleteConfirm() {
+    
+    onDeleteSubmit(e) {
         if (this.props.onDelete) {
             this.props.onDelete()
         }
     }
+
+    onDeleteConfirm() {
+        this.deleteButtonRef.current.click()
+    }
+
+
     onDeleteCancel() {
         this.setState({isDeleting:false, isEditing:false})
     }
@@ -101,7 +109,7 @@ export class Comment extends Component {
                     </div>
                     {
                         isEditing
-                            ? <CommentInput quality={quality} terms={terms} extended={extended} currentUser={currentUser} isEditing={true} item={item}/> 
+                            ? <CommentInput action={`/comments/${item.id}`} quality={quality} terms={terms} extended={extended} currentUser={currentUser} isEditing={true} item={item}/> 
                             : <div className="card__list__item__comment__text">
                                 {item.message}
                                 {item.attachments.length > 0 && <div className="card__list__item__comment__attach">
@@ -115,6 +123,15 @@ export class Comment extends Component {
                 </div>
                     {isDeleting && <span className="card__list__item__comment__text__confirm">
                             <span>Вы точно хотите удалить комментарий?</span>
+                            <form 
+                                action={`comments/${item.id}`} 
+                                method="delete" 
+                                data-remote="true" 
+                                style={{display:"none"}}
+                                onSubmit={this.onDeleteSubmit.bind(this)}
+                            >
+                                <input ref={this.deleteButtonRef} type="submit" />
+                            </form>
                             <div className="yes" onClick={this.onDeleteConfirm.bind(this)}></div>
                             <div className="no" onClick={this.onDeleteCancel.bind(this)}></div>
                     </span> }

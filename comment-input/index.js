@@ -138,16 +138,17 @@ export class CommentInput extends Component {
 
     render() {
         const {message, attachments, youtubeLink, isYoutubeInputShow} = this.state
-        const {procurement_id, work_id, type_evaluation, extended, currentUser, isEditing, quality, terms, action} = this.props
+        const {procurement_id, work_id, type_evaluation, type_comment, extended, currentUser, isEditing, quality, terms, action} = this.props
         return (
             <form action={action} data-remote="true" method="post" >
-                <input name="file" type="file"  accept="image/*" onChange={this.onImagesChange.bind(this)} ref={this.fileInputRef} hidden />
-                <input name="procurement_id" type="text" value={procurement_id}  hidden />
+                <input name="comment[file]" type="file"  accept="image/*" onChange={this.onImagesChange.bind(this)} ref={this.fileInputRef} hidden />
+                <input name="comment[procurement_id]" type="text" value={procurement_id} readOnly  hidden />
+                <input name="comment[type_comment]" type="text" value={type_comment} readOnly  hidden />
                 {work_id !== undefined 
                     ?
-                    <input name="work_id" type="text" value={work_id}  hidden />
+                    <input name="comment[work_id]" type="text" value={work_id} readOnly  hidden />
                     :
-                    <input name="type_evaluation" type="text" value={type_evaluation} hidden />
+                    <input name="comment[type_evaluation]" type="text" value={type_evaluation} readOnly hidden />
                 }
                 <div className={`card__list__item__comment__add ${isEditing ? 'editing' : ''} ${extended ? 'extended' : 'simple'}`}>
                     {!isEditing && <Avatar className="card__avatar" fullname={currentUser.fullname} photo_url={currentUser.photo_url}/>}
@@ -161,7 +162,7 @@ export class CommentInput extends Component {
                                     type="text"
                                     id="message"
                                     onChange={this.onChange.bind(this)}
-                                    name="text"
+                                    name="comment[text]"
                                     value={message}
                                     style={{height:this.state.height}}
                                 ></textarea>
@@ -181,7 +182,7 @@ export class CommentInput extends Component {
                             </div>}
 
                             {extended && isYoutubeInputShow&& <span className="input_form card__list__item__comment__edit_form youtube">
-                                <input onChange={this.onYoutubeInputChange.bind(this)} type="text" name="video_url" ref={this.youtubeInputRef} placeholder="Cсылка на YouTube" value={youtubeLink} />
+                                <input onChange={this.onYoutubeInputChange.bind(this)} type="text" name="comment[video_url]" ref={this.youtubeInputRef} placeholder="Cсылка на YouTube" value={youtubeLink} />
                             </span>}
                             
                             {extended && <div className="card__list__item__comment__selectors">
@@ -189,7 +190,7 @@ export class CommentInput extends Component {
                                 <Dropdown options={terms} selected={0}></Dropdown>
                             </div>}
                             {!extended && <label className="checkbox_container">Есть нарушения
-                                <input type="checkbox" name="is_propblem" />
+                                <input type="checkbox" name="comment[is_propblem]" />
                                 <span className="checkmark"></span>
                             </label>}
                         </div>

@@ -43,7 +43,7 @@ class Comments extends Component {
                                 className="btn btn-third card__list__item__comment__button"
                                 onClick={this.showAllClickHandler.bind(this)}
                             >Показать все комментарии</button>}
-                    <CommentInput procurement_id={procurement_id} work_id={work_id} type_evaluation={type_evaluation} token={token} quality={quality} terms={terms} extended={extended} currentUser={currentUser} />
+                    <CommentInput action="/comments/create" procurement_id={procurement_id} work_id={work_id} type_evaluation={type_evaluation} token={token} quality={quality} terms={terms} extended={extended} currentUser={currentUser} />
                 </div>
         )
     }

@@ -14,26 +14,65 @@ export class CommentInput extends Component {
 
     constructor(props) {
         super(props)
+
+        
+        let attachments = []
+        if (props.photo_url !== undefined) {
+            if (typeof props.photo_url === "string") {
+                if (props.photo_url) {
+                    attachments.push(props.photo_url)
+                }
+            } else {
+                props.photo_url.forEach(element => {
+                    attachments.push(element)
+                });
+            }
+        }
+        if (props.video_url !== undefined) {
+            if (typeof props.video_url === "string") {
+                if (props.video_url) {
+                    attachments.push(props.video_url)
+                }
+            } else {
+                props.video_url.forEach(element => {
+                    attachments.push(element)
+                });
+            }
+        }
+
+        console.log(attachments)
         this.state = {
-            message:(props.item && props.item.message) ? props.item.message : '' ,
+            text:(props.item && props.item.text) ? props.item.text : '' ,
             youtubeLink:"", 
             height:"0", 
             isYoutubeInputShow:props.isEditing,
-            attachments:(props.item && props.item.attachments) ? props.item.attachments : []
+            attachments:attachments
         }
     }
 
     onSubmit = (e) => {
-        // console.log(this.props.token)
-        e.stopPropagation();
+        let {extended, currentUser, quality, terms} = this.props
         let data = new FormData(e.target)
         // TODO тут возможно нужна будет дополнительная какая-то логика по обновлению списка
-        return false
+        let wrapper_comments = document.querySelector("#wrapper__comments")
+        if (wrapper_comments !== undefined && wrapper_comments !== null) {
+            let comment = {
+                'user': currentUser,
+                'created_at': 'сейчас',
+                'is_propblem': data.get('is_propblem'),
+                'text': data.get('text'),
+                'attachments': data.get('attachments'),
+            }
+            let react_component = (
+                <Comment quality={quality} terms={terms} extended={extended} key={wrapper_comments.length} item={comment} onDelete={(e) => {this.onDelete(comment, wrapper_comments.length)}}></Comment>
+            )
+            wrapper_comments.append(react_component)
+        }
     } 
 
     componentWillReceiveProps() {
         this.setState({
-            message:this.props.message ? this.props.message : '' ,
+            text:this.props.text ? this.props.text : '' ,
         }, this.autoGrow)
     }
     
@@ -51,7 +90,7 @@ export class CommentInput extends Component {
      */
     onChange(e) {
         // применяем текст
-        this.setState({message:e.target.value})
+        this.setState({text:e.target.value})
         this.autoGrow(e.target)
     }
 
@@ -116,6 +155,7 @@ export class CommentInput extends Component {
                 <img src={`http://img.youtube.com/vi/${videoId}/1.jpg`} alt="" />
             </div>
             : <div key={i} className="image"  onClick={(e)=>{this.onAttachmentDelete(url, i)}}>
+                <input name="photo_url[]" type="text" value={url}  hidden readOnly/>
                 <img src={url} alt="" />
             </div>
         )
@@ -137,32 +177,33 @@ export class CommentInput extends Component {
     }
 
     render() {
-        const {message, attachments, youtubeLink, isYoutubeInputShow} = this.state
-        const {procurement_id, work_id, type_evaluation, extended, currentUser, isEditing, quality, terms} = this.props
+        const {text, attachments, youtubeLink, isYoutubeInputShow} = this.state
+        const {procurement_id, work_id, type_evaluation, type_comment, extended, currentUser, isEditing, quality, terms, action} = this.props
         return (
-            <form action="/comments/create" data-remote="true" method="post" >
-                <input name="file" type="file"  accept="image/*" onChange={this.onImagesChange.bind(this)} ref={this.fileInputRef} hidden />
-                <input name="procurement_id" type="text" value={procurement_id}  hidden />
+            <form action={action} data-remote="true" onSubmit={this.onSubmit.bind(this)} method="post" >
+                <input name="comment[file]" type="file"  accept="image/*" onChange={this.onImagesChange.bind(this)} ref={this.fileInputRef} hidden />
+                <input name="comment[procurement_id]" type="text" value={procurement_id} readOnly  hidden />
+                <input name="comment[type_comment]" type="text" value={type_comment} readOnly  hidden />
                 {work_id !== undefined 
                     ?
-                    <input name="work_id" type="text" value={work_id}  hidden />
+                    <input name="comment[work_id]" type="text" value={work_id} readOnly  hidden />
                     :
-                    <input name="type_evaluation" type="text" value={type_evaluation} hidden />
+                    <input name="comment[type_evaluation]" type="text" value={type_evaluation} readOnly hidden />
                 }
                 <div className={`card__list__item__comment__add ${isEditing ? 'editing' : ''} ${extended ? 'extended' : 'simple'}`}>
                     {!isEditing && <Avatar className="card__avatar" fullname={currentUser.fullname} photo_url={currentUser.photo_url}/>}
                     <div className="card card__list__item__comment__text_container">
                         <div className="card card__list__item__comment__text edit">
                             <span className="input_form textarea_form">
-                                {!isEditing && <label id="txt2" htmlFor="message" className={`label form-input__label ${message !== '' ? 'full' : ''}`}>Добавьте комментарий</label>}
+                                {!isEditing && <label id="txt2" htmlFor="message" className={`label form-input__label ${text !== '' ? 'full' : ''}`}>Добавьте комментарий</label>}
                                 <textarea 
                                     ref={this.textareaRef}
                                     className="card__list__item__comment__textarea" 
                                     type="text"
                                     id="message"
                                     onChange={this.onChange.bind(this)}
-                                    name="text"
-                                    value={message}
+                                    name="comment[text]"
+                                    value={text}
                                     style={{height:this.state.height}}
                                 ></textarea>
                             </span>
@@ -181,7 +222,7 @@ export class CommentInput extends Component {
                             </div>}
 
                             {extended && isYoutubeInputShow&& <span className="input_form card__list__item__comment__edit_form youtube">
-                                <input onChange={this.onYoutubeInputChange.bind(this)} type="text" name="video_url" ref={this.youtubeInputRef} placeholder="Cсылка на YouTube" value={youtubeLink} />
+                                <input onChange={this.onYoutubeInputChange.bind(this)} type="text" name="comment[video_url]" ref={this.youtubeInputRef} placeholder="Cсылка на YouTube" value={youtubeLink} />
                             </span>}
                             
                             {extended && <div className="card__list__item__comment__selectors">
@@ -189,7 +230,7 @@ export class CommentInput extends Component {
                                 <Dropdown options={terms} selected={0}></Dropdown>
                             </div>}
                             {!extended && <label className="checkbox_container">Есть нарушения
-                                <input type="checkbox" name="is_propblem" />
+                                <input type="checkbox" name="comment[is_propblem]" />
                                 <span className="checkmark"></span>
                             </label>}
                         </div>

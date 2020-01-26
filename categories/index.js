@@ -97,23 +97,19 @@ class Categories extends Component {
         })
         .then(response => {
             if (response.status === 201) {
-                // получаю максимальное значение id объекта чтобы добавить уникальный id для нового объекта
-                var maxId = this.state.categories[categoryIndex].list.reduce((accumulator, current)=> {
-                    return Math.max(accumulator, current.id)
-                }, 0)
-                
-                // добавляю новый объект
-                this.state.categories[categoryIndex].list.push({name:"Новый объект", id:maxId + 1})
-
-                // обновляю состояние с новым объектом в категории
-                this.setState({categories:this.state.categories})
+                return response.json()
             } else if (response !== null) {
                 return response.json()
             }
         })
         .then(data => {
             if (data !== null) {
-                console.log(data)
+                if (data.object !== undefined) {
+                    // добавляю новый объект
+                    this.state.categories[categoryIndex].list.push({name:"Новый объект", id: data.object.id})
+                    // обновляю состояние с новым объектом в категории
+                    this.setState({categories:this.state.categories})
+                }
             }
         })
     }

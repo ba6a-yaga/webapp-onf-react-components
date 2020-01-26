@@ -7,18 +7,18 @@ class Avatar extends Component {
     }
     
     render() {
-        const {name, url} = this.props
+        const {fullname, photo_url} = this.props
         return (
-            <span className="card__avatar">{url ?<img src={url}/> : this.initialsFor(name)}</span>
+            <span className="card__avatar">{photo_url ?<img src={photo_url}/> : fullname}</span>
         )
     }
 }
 
 Avatar.propTypes = {
     // Ссылка на аватарку
-    url: PropTypes.string,
+    photo_url: PropTypes.string,
     // Имя пользователя
-    name: PropTypes.string.isRequired,
+    fullname: PropTypes.string.isRequired,
 }
 export default Avatar
 

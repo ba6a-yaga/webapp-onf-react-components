@@ -18,7 +18,7 @@ Avatar.propTypes = {
     // Ссылка на аватарку
     photo_url: PropTypes.string,
     // Имя пользователя
-    fullname: PropTypes.string.isRequired,
+    // fullname: PropTypes.string.isRequired,
 }
 export default Avatar
 

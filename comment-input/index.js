@@ -47,8 +47,8 @@ export class CommentInput extends Component {
             isYoutubeInputShow:props.isEditing,
             attachments:attachments,
             isProblem:props.is_propblem,
-            tag_quality:props.item?.tag_quality,
-            tag_terms:props.item?.tag_terms
+            tag_quality:props.item?.tag_quality ?? -1,
+            tag_terms:props.item?.tag_terms ?? -1
         }
     }
 
@@ -205,6 +205,8 @@ export class CommentInput extends Component {
     render() {
         const {text, attachments, youtubeLink, isYoutubeInputShow, isProblem, tag_quality, tag_terms} = this.state
         const {procurement_id, work_id, type_evaluation, type_comment, extended, currentUser, isEditing, quality, terms, action} = this.props
+        
+        
         return (
             <form action={action} data-remote="true" onSubmit={this.onSubmit.bind(this)} method="post" >
                 <input name="comment[file]" type="file"  accept="image/*" onChange={this.onImagesChange.bind(this)} ref={this.fileInputRef} hidden />
@@ -252,17 +254,19 @@ export class CommentInput extends Component {
                             </span>}
                             {extended && <div className="card__list__item__comment__selectors">
                                 <Dropdown 
+                                    name="comment[tag_quality]"
                                     options={quality} 
                                     selected={tag_quality} 
                                     onChange={(item, index) => {
-                                        this.setState({tag_quality:index})
+                                        this.setState({tag_quality:item.value})
                                     }}
                                 />
                                 <Dropdown 
+                                    name="comment[tag_terms]"
                                     options={terms} 
                                     selected={tag_terms} 
                                     onChange={(item, index) => {
-                                        this.setState({tag_terms:index})
+                                        this.setState({tag_terms:item.value})
                                     }}
                                 />
                             </div>}

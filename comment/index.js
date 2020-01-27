@@ -102,11 +102,11 @@ export class Comment extends Component {
                             : null
                         }
                         {extended && item.tag_quality !== undefined 
-                            ? <span className={`card__list__item__comment__tag ${this.getStatusColors(item.tag_quality)}`}>{quality[item.tag_quality].name}</span> 
+                            ? <span className={`card__list__item__comment__tag ${this.getStatusColors(item.tag_quality)}`}>{quality[item.tag_quality+ 1].name}</span> 
                             : null
                         }
                         {extended && item.tag_terms !== undefined 
-                            ? <span className={`card__list__item__comment__tag ${this.getStatusColors(item.tag_terms)}`}>{terms[item.tag_terms].name}</span> 
+                            ? <span className={`card__list__item__comment__tag ${this.getStatusColors(item.tag_terms)}`}>{terms[item.tag_terms+ 1].name}</span> 
                             : null
                         }
                     </div>

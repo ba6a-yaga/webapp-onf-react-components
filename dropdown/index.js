@@ -78,13 +78,14 @@ export class Dropdown extends Component {
         this.setState({isExpanded:false, listHeight:0, selected:index}, this.collapse)
 
         if (this.props.onChange) {
-            this.props.onChange(item, index)
+            this.props.onChange(item, index - 1)
         }
     }
 
     render() {
         const {isExpanded, listWidth, listHeight, listTop, listLeft, options, selected} = this.state
-        var selectedItem = options[selected]
+        const {name} = this.props
+        var selectedItem = options[selected + 1]
         
         return (
             <div className={`input_selector mr-3 dropdown ${isExpanded ? 'dropdown_expanded' : 'dropdown_collapsed'}`}>
@@ -97,13 +98,13 @@ export class Dropdown extends Component {
                             <li 
                                 className="dropdown__item" 
                                 key={index} 
-                                onClick={(e)=>{this.selectItem(item, index)}} 
+                                onClick={(e)=>{this.selectItem(item, index - 1)}} 
                                 hidden={item.disabled}
                             >{item.name}</li>
                         )
                     })}
                 </ul>
-                <select style={{display:"none"}} ref={this.selectRef} defaultValue={selectedItem.value}>
+                <select style={{display:"none"}} ref={this.selectRef} name={name} value={selectedItem.value} onChange={e=>{}} >
                     {options && options.map((item, index) => {
                         return (
                             <option 

@@ -46,7 +46,7 @@ class Comments extends Component {
         const {showAll, list, newComments} = this.state
         const {procurement_id, work_id, type_evaluation, type_comment, extended, className, currentUser, quality, terms, token} = this.props
         let comments = showAll ? list : list.slice(0, 2)
-        comments = [...list, ...newComments] 
+        comments = [...comments, ...newComments] 
         return (
                 <div className={`${className ? className: '' } card__list__item__comments`}>
                     <div id="wrapper__comments">

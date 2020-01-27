@@ -5,6 +5,7 @@ import UserCard from '../user-card'
 import "./index.scss";
 import utils from '../comments/utils';
 import Dropdown from '../dropdown';
+import Comment from '../comment';
 
 export class CommentInput extends Component {
     textareaRef = React.createRef()
@@ -14,8 +15,6 @@ export class CommentInput extends Component {
 
     constructor(props) {
         super(props)
-
-        
         let attachments = []
         if (props.photo_url !== undefined) {
             if (typeof props.photo_url === "string") {
@@ -46,28 +45,55 @@ export class CommentInput extends Component {
             youtubeLink:"", 
             height:"0", 
             isYoutubeInputShow:props.isEditing,
-            attachments:attachments
+            attachments:attachments,
+            isProblem:props.is_propblem,
+            tag_quality:props.item?.tag_quality,
+            tag_terms:props.item?.tag_terms
         }
     }
 
     onSubmit = (e) => {
-        let {extended, currentUser, quality, terms} = this.props
+        const {
+            procurement_id, 
+            work_id, 
+            type_evaluation, 
+            type_comment, 
+            extended, 
+            currentUser, 
+            isEditing, 
+            quality, 
+            terms, 
+            action,
+        } = this.props
+
         let data = new FormData(e.target)
         // TODO тут возможно нужна будет дополнительная какая-то логика по обновлению списка
-        let wrapper_comments = document.querySelector("#wrapper__comments")
-        if (wrapper_comments !== undefined && wrapper_comments !== null) {
+            console.log(data)
+        if (this.props.onCommentSubmit) {
             let comment = {
+                'tag_terms':this.state.tag_terms,
+                'tag_quality':this.state.tag_quality,
+                'procurement_id':procurement_id,
+                'type_comment':type_comment,
+                'work_id':work_id,
+                'type_evaluation':type_evaluation,
                 'user': currentUser,
                 'created_at': 'сейчас',
-                'is_propblem': data.get('is_propblem'),
-                'text': data.get('text'),
-                'attachments': data.get('attachments'),
+                'is_propblem': this.state.isProblem,
+                'text': this.state.text,
+
+                'photo_url': this.state.attachments.filter((item) => {
+                    return utils.youtubeParser(item) === undefined
+                }),
+                'video_url': this.state.attachments.find((item) => {
+                    return utils.youtubeParser(item) !== undefined
+                }),
             }
-            let react_component = (
-                <Comment quality={quality} terms={terms} extended={extended} key={wrapper_comments.length} item={comment} onDelete={(e) => {this.onDelete(comment, wrapper_comments.length)}}></Comment>
-            )
-            wrapper_comments.append(react_component)
+
+            this.props.onCommentSubmit(e, comment)
         }
+        e.preventDefault()
+        return false
     } 
 
     componentWillReceiveProps() {
@@ -177,7 +203,7 @@ export class CommentInput extends Component {
     }
 
     render() {
-        const {text, attachments, youtubeLink, isYoutubeInputShow} = this.state
+        const {text, attachments, youtubeLink, isYoutubeInputShow, isProblem, tag_quality, tag_terms} = this.state
         const {procurement_id, work_id, type_evaluation, type_comment, extended, currentUser, isEditing, quality, terms, action} = this.props
         return (
             <form action={action} data-remote="true" onSubmit={this.onSubmit.bind(this)} method="post" >
@@ -224,13 +250,29 @@ export class CommentInput extends Component {
                             {extended && isYoutubeInputShow&& <span className="input_form card__list__item__comment__edit_form youtube">
                                 <input onChange={this.onYoutubeInputChange.bind(this)} type="text" name="comment[video_url]" ref={this.youtubeInputRef} placeholder="Cсылка на YouTube" value={youtubeLink} />
                             </span>}
-                            
                             {extended && <div className="card__list__item__comment__selectors">
-                                <Dropdown options={quality} selected={0}></Dropdown>
-                                <Dropdown options={terms} selected={0}></Dropdown>
+                                <Dropdown 
+                                    options={quality} 
+                                    selected={tag_quality} 
+                                    onChange={(item, index) => {
+                                        this.setState({tag_quality:index})
+                                    }}
+                                />
+                                <Dropdown 
+                                    options={terms} 
+                                    selected={tag_terms} 
+                                    onChange={(item, index) => {
+                                        this.setState({tag_terms:index})
+                                    }}
+                                />
                             </div>}
                             {!extended && <label className="checkbox_container">Есть нарушения
-                                <input type="checkbox" name="comment[is_propblem]" />
+                                <input 
+                                    type="checkbox" 
+                                    name="comment[is_propblem]" 
+                                    value={isProblem} 
+                                    onChange={e => {this.setState({isProblem:!isProblem})}} 
+                                />
                                 <span className="checkmark"></span>
                             </label>}
                         </div>

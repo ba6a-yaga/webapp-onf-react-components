@@ -8,8 +8,7 @@ export class Dropdown extends Component {
     selectRef = React.createRef()
     constructor(props) {
         super(props)
-        const {options} = props
-        let selected = options.findIndex((item)=> {return item.selected})
+        let {options, selected} = props
         console.log(selected)
         if (!selected) {
             selected = 0
@@ -18,7 +17,7 @@ export class Dropdown extends Component {
         this.state = {
             isExpanded:false,
             selected:selected,
-            options:props.options
+            options:options
         }
 
         this.onClickOutside = this.onClickOutside.bind(this);  
@@ -58,7 +57,6 @@ export class Dropdown extends Component {
     }
 
     collapse() {
-        console.log()
         this.setState({isExpanded:false, listHeight:0})
     }
 

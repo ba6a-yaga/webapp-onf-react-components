@@ -96,7 +96,7 @@ export class Comment extends Component {
                     </div>
                     <div className="card__list__item__comment__tag__container">
                         {!extended
-                            ? <span className={`card__list__item__comment__tag ${this.getOffenceColor(item.isOffence)}`}>
+                            ? <span className={`card__list__item__comment__tag ${this.getOffenceColor(item.is_propblem)}`}>
                                     {this.getOffenceTitle(item.is_propblem)}
                                 </span> 
                             : null

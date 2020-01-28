@@ -1,4 +1,4 @@
-.member-card {
+.article-card {
     transition-duration: 300ms;
     transition-timing-function: ease-out;
     &__preloader-circle {
@@ -10,13 +10,6 @@
     }
     .card__name {
         font-size:15px;
-    }
-    .card__avatar {
-        img {
-            width:40px;
-            height:40px;
-        }
-        font-size:13px;
     }
 
     .edit, .delete 
@@ -37,13 +30,7 @@
     }
     &__preloader {
         width:100%;
-        grid-template-columns: 40px minmax(0, 1fr);
         display:grid;
         grid-gap:5px 15px;
-    }
-    &__preloader-circle {
-        width:40px;
-        height:40px;
-        background-color: #878787;
     }
 }

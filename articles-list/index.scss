@@ -6,42 +6,19 @@
         bottom:30px;
     }
     .masonry {
-        column-count: 3;
-        display: inline-block;
-        width:100%;
+      display: -webkit-box; /* Not needed if autoprefixing */
+      display: -ms-flexbox; /* Not needed if autoprefixing */
+      display: flex;
+      margin-left: -30px; /* gutter size offset */
+      width: auto;
     }
     .masonry__item {
-        display:inline-block;
+      padding-left: 30px; /* gutter size */
+      background-clip: padding-box;
     }
-      
-      .masonry__item {
-        position: relative;
-        width: 100%;
-        color: #aca7a7;
-        -webkit-column-break-inside: avoid;
-        break-inside: avoid;
-        page-break-inside: avoid;
-        &:nth-of-type(4n+1) { order: 1; }
-        &:nth-of-type(4n+2) { order: 2; }
-        &:nth-of-type(4n+3) { order: 3; }
-        &:nth-of-type(4n)   { order: 4; }
-      }
-      .break {
-        
-        flex-basis: 100%;
-        width: 0;
-        border: 1px solid #ddd;
-        margin: 0;
-        content: "";
-        padding: 0;
-      }
-      
-      /* Force new columns */
-      &::before,
-      &::after {
-        content: "";
-        flex-basis: 100%;
-        width: 0;
-        order: 2;
+     
+    /* Style your items */
+    .masonry__item > div { /* change div to reference your elements you put in <Masonry> */
+      margin-bottom: 10px;
     }
 }

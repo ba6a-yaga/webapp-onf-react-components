@@ -4,17 +4,22 @@ import ContentLoader from '../content-loader';
 import MemberCard from '../member-card';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import ArticleCard from '../article-card';
-export default class MembersList extends Component {
+import Masonry from 'react-masonry-css'
+
+export default class ArticlesList extends Component {
     preloadingItemsCount = 6;
+    breakpointColumnsObj = {
+        default: 3,
+        992: 2,
+        768: 1,
+    };
     constructor(props) {
         super(props)
         this.state = {
             list: props.data ? props.data : [],
             isLoading:false,
             noMoreData:false,
-            columnsCount:3
         }
-        this.onResize = this.onResize.bind(this)
     }
 
 
@@ -46,43 +51,6 @@ export default class MembersList extends Component {
         }, 1000)
     }
 
-    componentDidMount() {
-        window.addEventListener("resize", this.onResize)
-    }
-
-    onResize(e) {
-        const width = window.innerWidth
-        let currentColumnsCount = this.state.columnsCount;
-        let newColumnsCount = currentColumnsCount;
-        if (width < 768) {
-            newColumnsCount = 1
-        } else if (width < 992 ) {
-            newColumnsCount = 2
-        } else {
-            newColumnsCount = 3
-        }
-        if (currentColumnsCount != newColumnsCount) {
-            this.setState({columnsCount:newColumnsCount})
-        }
-    }
-
-    reorder = (arr, columns) => {
-        const cols = columns;
-        const out = [];
-        let col = 0;
-
-        console.log("reordering")
-        while(col < cols) {
-            for(let i = 0; i < arr.length; i += cols) {
-                let _val = arr[i + col];
-                if (_val !== undefined)
-                    out.push(_val);
-            }
-            col++;
-        }
-        return out
-    }
-
     onDelete(id) {
         let index = this.state.list.findIndex(item => {return item.id == id});
         if (index != -1) {
@@ -99,7 +67,7 @@ export default class MembersList extends Component {
         const {list, isLoading, noMoreData} = this.state
         var elements = list.map((item, index) => {
             return (
-            <div className="masonry__item mb-3" key={item.id}>
+            <div key={item.id}>
                 <ArticleCard 
                     onDelete={(index) => {this.onDelete(index)}}
                     {...item}
@@ -109,7 +77,7 @@ export default class MembersList extends Component {
         if (isLoading) {
             for (let i = 0; i < this.preloadingItemsCount; i++) {
                 elements.push(
-                    <div className="masonry__item mb-3">
+                    <div>
                         <ArticleCard isLoading={true}/>
                     </div>
                 )
@@ -121,15 +89,21 @@ export default class MembersList extends Component {
         const {list, isLoading, noMoreData, columnsCount} = this.state
         return (
             <div className="articles-list container">
+                <Masonry
+                    breakpointCols={this.breakpointColumnsObj}
+                    className="masonry"
+                    columnClassName="masonry__item mb-3">
+                     {this.getElements()}
+                </Masonry>
                 <div className="masonry" style={{columnCount:columnsCount}}>
-                    {this.reorder(this.getElements(), columnsCount)}
+                   
                 </div>
 
                 <ContentLoader isLoading={isLoading} noMoreData={noMoreData} onLoadMore={this.onLoadMore.bind(this)} />
 
                 <div className="row mt-5">
                     <div className="col-12 text-center">
-                        <button type="button" onClick={this.onAddClick.bind(this)} className="btn btn-main">Добавить видеоролик</button>
+                        <a href="/articles/create" type="button" onClick={this.onAddClick.bind(this)} className="btn btn-main">Добавить видеоролик</a>
                     </div>
                 </div>
             </div>

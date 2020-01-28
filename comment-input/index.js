@@ -15,6 +15,10 @@ export class CommentInput extends Component {
 
     constructor(props) {
         super(props)
+        this.state = this.getNewState(props)
+    }
+
+    getNewState(props) {
         let attachments = []
         if (props.photo_url !== undefined) {
             if (typeof props.photo_url === "string") {
@@ -38,15 +42,15 @@ export class CommentInput extends Component {
                 });
             }
         }
+        console.log("props.is_propblem", props.item ? props.item.is_propblem : "fasdf")
 
-        console.log(attachments)
-        this.state = {
+        return {
             text:(props.item && props.item.text) ? props.item.text : '' ,
             youtubeLink:"", 
             height:"0", 
             isYoutubeInputShow:props.isEditing,
             attachments:attachments,
-            isProblem:props.is_propblem,
+            isProblem:(props.item && props.item.is_propblem) ? props.item.is_propblem : false,
             tag_quality:props.item?.tag_quality ?? -1,
             tag_terms:props.item?.tag_terms ?? -1
         }
@@ -68,7 +72,6 @@ export class CommentInput extends Component {
 
         let data = new FormData(e.target)
         // TODO тут возможно нужна будет дополнительная какая-то логика по обновлению списка
-            console.log(data)
         if (this.props.onCommentSubmit) {
             let comment = {
                 'tag_terms':this.state.tag_terms,
@@ -81,12 +84,12 @@ export class CommentInput extends Component {
                 'created_at': 'сейчас',
                 'is_propblem': this.state.isProblem,
                 'text': this.state.text,
-
                 'photo_url': this.state.attachments.filter((item) => {
-                    return utils.youtubeParser(item) === undefined
+                    console.log(utils.youtubeParser(item), item)
+                    return !utils.youtubeParser(item)
                 }),
                 'video_url': this.state.attachments.find((item) => {
-                    return utils.youtubeParser(item) !== undefined
+                    return utils.youtubeParser(item)
                 }),
             }
 
@@ -96,10 +99,8 @@ export class CommentInput extends Component {
         return false
     } 
 
-    componentWillReceiveProps() {
-        this.setState({
-            text:this.props.text ? this.props.text : '' ,
-        }, this.autoGrow)
+    componentWillReceiveProps(props) {
+        this.setState(this.getNewState(props), this.autoGrow)
     }
     
     componentDidMount(){
@@ -275,6 +276,7 @@ export class CommentInput extends Component {
                                     type="checkbox" 
                                     name="comment[is_propblem]" 
                                     value={isProblem} 
+                                    checked={isProblem} 
                                     onChange={e => {this.setState({isProblem:!isProblem})}} 
                                 />
                                 <span className="checkmark"></span>

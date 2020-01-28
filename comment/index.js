@@ -83,7 +83,9 @@ export class Comment extends Component {
     render() {
         const {isEditing, isDeleting} = this.state
         const {item, extended, currentUser, quality, terms} = this.props
-        
+        console.log("[LOG]"+item.tag_quality)
+        console.log(quality)
+        console.log(terms)
         return (
             <div className={`card__list__item__comment ${isEditing ? 'editing':'' }`}>
                 <div className="card__list__item__comment__header">

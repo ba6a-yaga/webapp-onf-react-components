@@ -17,22 +17,35 @@ class Comments extends Component {
     }
 
     onCommentSubmit(e, data) {
-        // Это временное решение 
-        let comments = [...this.state.list, ...this.state.newComments] 
-        var maxId = comments.reduce((accumulator, current)=> {
-            return Math.max(accumulator, current.id ?? 0)
-        }, 0)
-        data.id = maxId + 1 // Это какой то временный id
-        // Все дальше твоя логика только maxId это твой id от сервера
-        this.state.newComments.push(data);
-        this.setState({newComments:this.state.newComments})
-
-        // Сюда запихни фетч и примени id
-        setTimeout(()=>{ 
-            data.id = maxId + 1
-            this.setState({newComments:this.state.newComments})
-        }, 1000)
-
+        $.ajax({
+            url: '/comments/create',
+            type: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-ONF-AUTH-TOKEN': this.props.token,
+                'X-CSRF-Token': Rails.csrfToken(),
+            },
+            data: JSON.stringify({ 
+                'comment': {
+                    'text': data.text,
+                    'type_comment': data.type_comment,
+                    'procurement_id': data.procurement_id,
+                    'type_evaluation': data.type_evaluation,
+                    'work_id': this.props.work_id,
+                    'tag_quality': data.tag_quality,
+                    'tag_terms': data.tag_terms,
+                    'photo_url': data.photo_url,
+                    'video_url': data.video_url,
+                    'is_propblem': data.is_propblem,
+                },
+            }),
+            success: item => {
+                data.id = item.comment.id
+                data.key = item.comment.id
+                this.state.newComments.push(data)
+                this.setState({newComments:this.state.newComments})
+            }
+        })
     }
 
     showAllClickHandler(e) {

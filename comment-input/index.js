@@ -66,9 +66,8 @@ export class CommentInput extends Component {
             action,
         } = this.props
 
-        let data = new FormData(e.target)
+        // let data = new FormData(e.target)
         // TODO тут возможно нужна будет дополнительная какая-то логика по обновлению списка
-            console.log(data)
         if (this.props.onCommentSubmit) {
             let comment = {
                 'tag_terms':this.state.tag_terms,
@@ -206,8 +205,8 @@ export class CommentInput extends Component {
         const {text, attachments, youtubeLink, isYoutubeInputShow, isProblem, tag_quality, tag_terms} = this.state
         const {procurement_id, work_id, type_evaluation, type_comment, extended, currentUser, isEditing, quality, terms, action} = this.props
         return (
-            <form action={action} data-remote="true" onSubmit={this.onSubmit.bind(this)} method="post" >
-                <input name="comment[file]" type="file"  accept="image/*" onChange={this.onImagesChange.bind(this)} ref={this.fileInputRef} hidden />
+            <form onSubmit={this.onSubmit.bind(this)} >
+                <input name="comment[photo_url]" type="file"  accept="image/*" onChange={this.onImagesChange.bind(this)} ref={this.fileInputRef} hidden />
                 <input name="comment[procurement_id]" type="text" value={procurement_id} readOnly  hidden />
                 <input name="comment[type_comment]" type="text" value={type_comment} readOnly  hidden />
                 {work_id !== undefined 

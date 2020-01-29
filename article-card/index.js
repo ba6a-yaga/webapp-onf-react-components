@@ -47,15 +47,16 @@ export class ArticleCard extends Component {
                                         allowfullscreen></iframe>
                             </div>,
                             <div class="card__text">
-                                <h2><a href={`articles/${id}`} >{title}</a></h2>
+                                <h2>{title}</h2>
                                 <p class="gray">{text}</p>
                             </div>,
                             <div class="card__button">
-                                <a href={`/articles/edit/${id}`} type="button" class="btn btn-edit btn-second">Редактировать</a>
-                                <a href="/" type="button"  onClick={this.onDelete.bind(this)} class="btn btn-delete btn-third mr-4">Удалить</a>
+                                <a href={`article/edit/${id}`} type="button" class="btn btn-edit btn-second">Редактировать</a>
+                                <a href="/" type="button"  onClick={this.onDelete.bind(this)} class="btn btn-third mr-4">Удалить</a>
                             </div>
                         ]
                         : <div className="article-card__preloader">
+                                <div className="article-card__preloader-circle"></div>
                                 <div>
                                     {this.contentPreloader.map((item)=>{
                                         return <div className="article-card__preloader-line" style={{...item}}></div>

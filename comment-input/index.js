@@ -15,10 +15,6 @@ export class CommentInput extends Component {
 
     constructor(props) {
         super(props)
-        this.state = this.getNewState(props)
-    }
-
-    getNewState(props) {
         let attachments = []
         if (props.photo_url !== undefined) {
             if (typeof props.photo_url === "string") {
@@ -42,17 +38,17 @@ export class CommentInput extends Component {
                 });
             }
         }
-        console.log("props.is_propblem", props.item ? props.item.is_propblem : "fasdf")
 
-        return {
+        console.log(attachments)
+        this.state = {
             text:(props.item && props.item.text) ? props.item.text : '' ,
             youtubeLink:"", 
             height:"0", 
             isYoutubeInputShow:props.isEditing,
             attachments:attachments,
-            isProblem:(props.item && props.item.is_propblem) ? props.item.is_propblem : false,
-            tag_quality:props.item?.tag_quality ?? -1,
-            tag_terms:props.item?.tag_terms ?? -1
+            isProblem:props.is_propblem,
+            tag_quality:props.item?.tag_quality,
+            tag_terms:props.item?.tag_terms
         }
     }
 
@@ -84,12 +80,12 @@ export class CommentInput extends Component {
                 'created_at': 'сейчас',
                 'is_propblem': this.state.isProblem,
                 'text': this.state.text,
+
                 'photo_url': this.state.attachments.filter((item) => {
-                    console.log(utils.youtubeParser(item), item)
-                    return !utils.youtubeParser(item)
+                    return utils.youtubeParser(item) === undefined
                 }),
                 'video_url': this.state.attachments.find((item) => {
-                    return utils.youtubeParser(item)
+                    return utils.youtubeParser(item) !== undefined
                 }),
             }
 
@@ -99,8 +95,10 @@ export class CommentInput extends Component {
         return false
     } 
 
-    componentWillReceiveProps(props) {
-        this.setState(this.getNewState(props), this.autoGrow)
+    componentWillReceiveProps() {
+        this.setState({
+            text:this.props.text ? this.props.text : '' ,
+        }, this.autoGrow)
     }
     
     componentDidMount(){
@@ -206,8 +204,6 @@ export class CommentInput extends Component {
     render() {
         const {text, attachments, youtubeLink, isYoutubeInputShow, isProblem, tag_quality, tag_terms} = this.state
         const {procurement_id, work_id, type_evaluation, type_comment, extended, currentUser, isEditing, quality, terms, action} = this.props
-        
-        
         return (
             <form onSubmit={this.onSubmit.bind(this)} >
                 <input name="comment[photo_url]" type="file"  accept="image/*" onChange={this.onImagesChange.bind(this)} ref={this.fileInputRef} hidden />
@@ -255,19 +251,17 @@ export class CommentInput extends Component {
                             </span>}
                             {extended && <div className="card__list__item__comment__selectors">
                                 <Dropdown 
-                                    name="comment[tag_quality]"
                                     options={quality} 
                                     selected={tag_quality} 
                                     onChange={(item, index) => {
-                                        this.setState({tag_quality:item.value})
+                                        this.setState({tag_quality:index})
                                     }}
                                 />
                                 <Dropdown 
-                                    name="comment[tag_terms]"
                                     options={terms} 
                                     selected={tag_terms} 
                                     onChange={(item, index) => {
-                                        this.setState({tag_terms:item.value})
+                                        this.setState({tag_terms:index})
                                     }}
                                 />
                             </div>}
@@ -276,7 +270,6 @@ export class CommentInput extends Component {
                                     type="checkbox" 
                                     name="comment[is_propblem]" 
                                     value={isProblem} 
-                                    checked={isProblem} 
                                     onChange={e => {this.setState({isProblem:!isProblem})}} 
                                 />
                                 <span className="checkmark"></span>

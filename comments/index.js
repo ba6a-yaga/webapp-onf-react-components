@@ -16,30 +16,6 @@ class Comments extends Component {
         }
     }
 
-    /**
-     * Метод окончания редактирования компонента
-     * @param {*} e 
-     * @param {*} data 
-     */
-    onCommentEditSubmit(e, data) {
-        let comments = [...this.state.list, ...this.state.newComments] 
-        let currentComment = comments.find(item => {
-            return item.id == data.id
-        })
-        
-        for (let key in currentComment) {
-            currentComment[key] = data[key]
-            console.log(key, data[key])
-        }
-        this.setState({newComments:this.state.newComments, list:this.state.list})
-
-        // Сюда запихни фетч и примени сущность от сервера
-        setTimeout(()=>{ 
-            this.setState({newComments:this.state.newComments})
-        }, 1000)
-
-    }
-
     onCommentSubmit(e, data) {
         $.ajax({
             url: '/comments/create',
@@ -75,35 +51,21 @@ class Comments extends Component {
     showAllClickHandler(e) {
         this.setState({showAll:true})
     }
-
-    /**
-     * Обработка удаления комментария
-     * @param {*} item 
-     * @param {*} index 
-     */
     onDelete(item, index) {
-        this.state.list = this.state.list.filter(el => {
-            return el.id !== item.id
-        })
-        this.state.newComments = this.state.newComments.filter(el => {
-            return el.id !== item.id
-        })
-
-        this.setState({list:this.state.list, newComments:this.state.newComments})
+        this.state.list.splice(index, 1)
+        this.setState({list:this.state.list})
     }
-
     render() {
         const {showAll, list, newComments} = this.state
         const {procurement_id, work_id, type_evaluation, type_comment, extended, className, currentUser, quality, terms, token} = this.props
         let comments = showAll ? list : list.slice(0, 2)
-        comments = [...comments, ...newComments] 
+        comments = [...list, ...newComments] 
         return (
                 <div className={`${className ? className: '' } card__list__item__comments`}>
                     <div id="wrapper__comments">
                         {comments && comments.map((item, index)=> {
                             return (
                                 <Comment 
-                                    onCommentEditSubmit={this.onCommentEditSubmit.bind(this)}
                                     quality={quality} 
                                     terms={terms} 
                                     extended={extended}
@@ -122,8 +84,7 @@ class Comments extends Component {
                                 onClick={this.showAllClickHandler.bind(this)}
                             >Показать все комментарии</button>}
                     <CommentInput 
-                        onCommentSubmit={this.onCommentSubmit.bind(this)}
-                        action="/comments/create" 
+                        onCommentSubmit={this.onCommentSubmit.bind(this)}action="/comments/create" 
                         procurement_id={procurement_id} 
                         work_id={work_id} 
                         tag_quality={0}

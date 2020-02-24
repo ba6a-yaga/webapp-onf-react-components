@@ -7,18 +7,21 @@ import ArticleCard from '../article-card';
 import Masonry from 'react-masonry-css'
 
 export default class ArticlesList extends Component {
-    preloadingItemsCount = 6;
     breakpointColumnsObj = {
         default: 3,
         992: 2,
         768: 1,
     };
+
     constructor(props) {
         super(props)
+        let data = props.data ? props.data : [];
         this.state = {
-            list: props.data ? props.data : [],
+            list: data,
             isLoading:false,
-            noMoreData:false,
+            noMoreData:data.length >= (props.total ?? 0),
+            total:props.total ?? 0,
+            placeholdersCount:props.placeholdersCount ?? 6
         }
     }
 
@@ -46,8 +49,9 @@ export default class ArticlesList extends Component {
                 })
             }
             console.log(this.state.list.length)
-            // !!!! CAUTION no more data определить по какому то параметру приходящему от сервера
-            this.setState({isLoading:false, noMoreData:this.state.list.length > 40})
+
+
+            this.setState({isLoading:false, noMoreData:this.state.list.length >= this.state.total})
         }, 1000)
     }
 
@@ -64,7 +68,7 @@ export default class ArticlesList extends Component {
     }
 
     getElements () {
-        const {list, isLoading, noMoreData} = this.state
+        const {list, isLoading, noMoreData, placeholdersCount} = this.state
         var elements = list.map((item, index) => {
             return (
             <div key={item.id}>
@@ -75,7 +79,7 @@ export default class ArticlesList extends Component {
             </div>
         )})
         if (isLoading) {
-            for (let i = 0; i < this.preloadingItemsCount; i++) {
+            for (let i = 0; i < placeholdersCount; i++) {
                 elements.push(
                     <div>
                         <ArticleCard isLoading={true}/>

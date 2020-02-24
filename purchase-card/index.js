@@ -14,6 +14,7 @@ export class PurchaseCard extends Component {
     render() {
         const {
             id, 
+            number,
             type,
             text, 
             price, 
@@ -46,7 +47,7 @@ export class PurchaseCard extends Component {
                         subscribed && <div className="card__tag card__tag__monitor"></div>}
                         {editable && <a href={url || '#'} className="purchase-card__edit-button card__tag card__tag__edit"></a> }
                         <div className="card__text">
-                            <a href={"#"} className="card__text__number">№{id}</a>
+                            <a href={"#"} className="card__text__number">{number}</a>
                             <p className="card__text__subtitle gray">{type}</p>
                             <p className="card__text__content">{text}</p>
                             <p className="card__text__price">{price} <span className="card__subtitle gray">руб.</span></p>

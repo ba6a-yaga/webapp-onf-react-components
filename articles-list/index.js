@@ -4,15 +4,24 @@ import ContentLoader from '../content-loader';
 import MemberCard from '../member-card';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import ArticleCard from '../article-card';
-export default class MembersList extends Component {
-    preloadingItemsCount = 6;
+import Masonry from 'react-masonry-css'
+
+export default class ArticlesList extends Component {
+    breakpointColumnsObj = {
+        default: 3,
+        992: 2,
+        768: 1,
+    };
+
     constructor(props) {
         super(props)
+        let data = props.data ? props.data : [];
         this.state = {
-            list: props.data ? props.data : [],
+            list: data,
             isLoading:false,
-            noMoreData:false,
-            columnsCount:3
+            noMoreData:data.length >= (props.total ?? 0),
+            total:props.total ?? 0,
+            placeholdersCount:props.placeholdersCount ?? 6
         }
         this.onResize = this.onResize.bind(this)
     }
@@ -41,8 +50,9 @@ export default class MembersList extends Component {
                 })
             }
             console.log(this.state.list.length)
-            // !!!! CAUTION no more data определить по какому то параметру приходящему от сервера
-            this.setState({isLoading:false, noMoreData:this.state.list.length > 40})
+
+
+            this.setState({isLoading:false, noMoreData:this.state.list.length >= this.state.total})
         }, 1000)
     }
 
@@ -96,7 +106,7 @@ export default class MembersList extends Component {
     }
 
     getElements () {
-        const {list, isLoading, noMoreData} = this.state
+        const {list, isLoading, noMoreData, placeholdersCount} = this.state
         var elements = list.map((item, index) => {
             return (
             <div className="masonry__item mb-3" key={item.id}>
@@ -107,7 +117,7 @@ export default class MembersList extends Component {
             </div>
         )})
         if (isLoading) {
-            for (let i = 0; i < this.preloadingItemsCount; i++) {
+            for (let i = 0; i < placeholdersCount; i++) {
                 elements.push(
                     <div className="masonry__item mb-3">
                         <ArticleCard isLoading={true}/>

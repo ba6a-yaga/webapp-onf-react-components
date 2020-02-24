@@ -4,13 +4,16 @@ import ContentLoader from '../content-loader';
 import MemberCard from '../member-card';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 export default class MembersList extends Component {
-    preloadingItemsCount = 6;
+    
     constructor(props) {
         super(props)
+        let data = props.data ? props.data : [];
         this.state = {
-            list: props.data ? props.data : [],
+            list: data,
             isLoading:false,
-            noMoreData:false,
+            noMoreData:data.length >= (props.total ?? 0),
+            total:props.total ?? 0,
+            placeholdersCount:props.placeholdersCount ?? 6
         }
     }
 
@@ -30,7 +33,7 @@ export default class MembersList extends Component {
             }
             console.log(this.state.list.length)
             // !!!! CAUTION no more data определить по какому то параметру приходящему от сервера
-            this.setState({isLoading:false, noMoreData:this.state.list.length > 40})
+            this.setState({isLoading:false, noMoreData:this.state.list.length >= this.state.total})
         }, 1000)
     }
 
@@ -44,7 +47,7 @@ export default class MembersList extends Component {
     }
 
     render() {
-        const {list, isLoading, noMoreData} = this.state
+        const {list, isLoading, noMoreData, placeholdersCount} = this.state
         return (
             <div className="purchases-list container">
             
@@ -58,7 +61,7 @@ export default class MembersList extends Component {
                             />
                         </div>
                     )})}
-                    {isLoading && Array(this.preloadingItemsCount).fill().map((i, index) => {
+                    {isLoading && Array(placeholdersCount).fill().map((i, index) => {
                         return (
                             <div className="col-12 col-md-6 col-lg-4 mb-3">
                                 <MemberCard isLoading={true}/>
@@ -72,7 +75,7 @@ export default class MembersList extends Component {
 
                 <div className="row mt-5">
                     <div className="col-12 text-center">
-                        <button type="button" onClick={this.onAddMemberClick.bind(this)} className="btn btn-main">Создать новый аккаунт</button>
+                        <a href="/123" onClick={this.onAddMemberClick.bind(this)} className="btn btn-main">Создать новый аккаунт</a>
                     </div>
                 </div>
             </div>

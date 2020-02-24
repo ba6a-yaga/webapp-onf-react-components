@@ -3,13 +3,15 @@ import PurchaseCard from '../purchase-card';
 import "./index.scss"
 import ContentLoader from '../content-loader';
 export default class PurchasesList extends Component {
-    preloadingItemsCount = 6;
     constructor(props) {
         super(props)
+        let data = props.data ? props.data : [];
         this.state = {
-            list: props.data ? props.data : [],
+            list: data,
             isLoading:false,
-            noMoreData:false,
+            noMoreData:data.length >= (props.total ?? 0),
+            total:props.total ?? 0,
+            placeholdersCount:props.placeholdersCount ?? 6
         }
     }
 
@@ -28,7 +30,7 @@ export default class PurchasesList extends Component {
                 })
             }
             // !!!! CAUTION no more data определить по какому то параметру приходящему от сервера
-            this.setState({isLoading:false, noMoreData:this.state.list.length > 40})
+            this.setState({isLoading:false, noMoreData:this.state.list.length >= this.state.total})
         }, 1000)
     }
  
@@ -37,7 +39,7 @@ export default class PurchasesList extends Component {
     }
 
     render() {
-        const {list, isLoading, noMoreData} = this.state
+        const {list, isLoading, noMoreData, placeholdersCount} = this.state
         return (
             <div className="purchases-list container">
                 <div className="row">
@@ -46,19 +48,18 @@ export default class PurchasesList extends Component {
                         return (
                         <div className="col-12 col-md-6 col-lg-4 mb-3"  key={item.id}>
                             <PurchaseCard 
-                               
                                 {...item}
                             />
                         </div>
                     )})}
-                    {isLoading && Array(this.preloadingItemsCount).fill().map((i, index) => {
-                        return <div className="col-12 col-md-6 col-lg-4 mb-3" key={index}>
+                    {isLoading && Array(placeholdersCount).fill().map((i, index) => {
+                        return (
+                        <div className="col-12 col-md-6 col-lg-4 mb-3" key={index}>
                             <PurchaseCard 
                                 isLoading={true}
-                                />
+                            />
                         </div>
-                            }
-                        )
+                    )})
                     }
                 </div>
                 <ContentLoader isLoading={isLoading} noMoreData={noMoreData} onLoadMore={this.onLoadMore.bind(this)} />

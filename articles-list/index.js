@@ -99,9 +99,6 @@ export default class ArticlesList extends Component {
                     columnClassName="masonry__item mb-3">
                      {this.getElements()}
                 </Masonry>
-                <div className="masonry" style={{columnCount:columnsCount}}>
-                   
-                </div>
 
                 <ContentLoader isLoading={isLoading} noMoreData={noMoreData} onLoadMore={this.onLoadMore.bind(this)} />
 

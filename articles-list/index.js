@@ -131,9 +131,12 @@ export default class ArticlesList extends Component {
         const {list, isLoading, noMoreData, columnsCount} = this.state
         return (
             <div className="articles-list container">
-                <div className="masonry" style={{columnCount:columnsCount}}>
-                    {this.reorder(this.getElements(), columnsCount)}
-                </div>
+                <Masonry
+                    breakpointCols={this.breakpointColumnsObj}
+                    className="masonry"
+                    columnClassName="masonry__item mb-3">
+                     {this.getElements()}
+                </Masonry>
 
                 <ContentLoader isLoading={isLoading} noMoreData={noMoreData} onLoadMore={this.onLoadMore.bind(this)} />
 

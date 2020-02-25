@@ -21,14 +21,6 @@ export class Comment extends Component {
         "green"
     ]
     
-    onCommentSubmit(e, data) {
-        data.id = this.props.item.id
-        data.user = this.props.item.user
-        if (this.props.onCommentEditSubmit) {
-            this.props.onCommentEditSubmit(e, data)
-            this.setState({isEditing:false})
-        }
-    }
 
     getOffenceTitle(isOffence) {
         return isOffence ? "Есть нарушения" : "Нет нарушений";
@@ -91,14 +83,16 @@ export class Comment extends Component {
     render() {
         const {isEditing, isDeleting} = this.state
         const {item, extended, currentUser, quality, terms} = this.props
-        
+        console.log("[LOG]"+item.tag_quality)
+        console.log(quality)
+        console.log(terms)
         return (
             <div className={`card__list__item__comment ${isEditing ? 'editing':'' }`}>
                 <div className="card__list__item__comment__header">
                     <div className="card__list__item__comment__card">
-                        <Avatar className="card__avatar" fullname={item.user && item.user.fullname} photo_url={item.user && item.user.photo_url}/>
+                        <Avatar className="card__avatar" fullname={item.user.fullname} photo_url={item.user.photo_url}/>
                         <div className="card__list__item__comment__name">
-                            <h2>{item.user && item.user.fullname}</h2>
+                            <h2>{item.user.fullname}</h2>
                             <span className="card__subtitle">{item.created_at}</span>
                         </div>
                     </div>
@@ -110,11 +104,11 @@ export class Comment extends Component {
                             : null
                         }
                         {extended && item.tag_quality !== undefined 
-                            ? <span className={`card__list__item__comment__tag ${this.getStatusColors(item.tag_quality)}`}>{quality[item.tag_quality+ 1].name}</span> 
+                            ? <span className={`card__list__item__comment__tag ${this.getStatusColors(item.tag_quality)}`}>{quality[item.tag_quality].name}</span> 
                             : null
                         }
                         {extended && item.tag_terms !== undefined 
-                            ? <span className={`card__list__item__comment__tag ${this.getStatusColors(item.tag_terms)}`}>{terms[item.tag_terms+ 1].name}</span> 
+                            ? <span className={`card__list__item__comment__tag ${this.getStatusColors(item.tag_terms)}`}>{terms[item.tag_terms].name}</span> 
                             : null
                         }
                     </div>
@@ -126,8 +120,7 @@ export class Comment extends Component {
                     </div>
                     {
                         isEditing
-                            ? <CommentInput
-                                onCommentSubmit={this.onCommentSubmit.bind(this)}
+                            ? <CommentInput 
                                 action={`/comments/${item.id}`}
                                 quality={quality} 
                                 terms={terms} 

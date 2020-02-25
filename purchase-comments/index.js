@@ -17,7 +17,7 @@ export class PurchaseComments extends Component {
                                     <span>{item.title}</span>
                                 </Expandable.Header>
                                 <Expandable.Content>
-                                    <Comments procurement_id={item.procurement_id} work_id={item.work_id} type_evaluation={item.type_evaluation} type_comment={item.type_comment} token={token} quality={quality} terms={terms} extended={extended} list={item.comments} currentUser={currentUser}></Comments>
+                                    <Comments procurement_id={item.procurement_id} work_id={item.id} type_evaluation={item.type_evaluation} type_comment={item.type_comment} token={token} quality={quality} terms={terms} extended={extended} list={item.comments} currentUser={currentUser}></Comments>
                                 </Expandable.Content>
                             </Expandable>
                         )}
